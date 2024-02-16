@@ -1,18 +1,18 @@
 # You Spin Me Round Robin
 
-TODO
+Writing the implementation for round robin scheduling for a given workload and quantum 
+    length given a basic skeleton that parses an input file and command line arguments.
 
 ## Building
 
 ```shell
-TODO
+make
 ```
 
 ## Running
 
-cmd for running TODO
 ```shell
-TODO
+./rr your_txt_file.txt quantum_length
 ```
 
 results TODO
@@ -24,5 +24,5 @@ TODO
 ## Cleaning up
 
 ```shell
-TODO
+make clean
 ```
