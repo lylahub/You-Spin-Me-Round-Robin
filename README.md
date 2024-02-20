@@ -11,15 +11,23 @@ make
 
 ## Running
 
+cmd for running
 ```shell
-./rr your_txt_file.txt quantum_length
+./rr your_processes_file.txt [int]
 ```
 
-results TODO
 ```shell
-TODO
-
+./rr processes.txt 3
 ```
+
+Results: when quantum length = 3:
+
+```shell
+./rr processes.txt 3
+Average waiting time: 7.00
+Average response time: 2.75
+```
+
 
 ## Cleaning up
 

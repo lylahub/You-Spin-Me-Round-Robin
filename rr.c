@@ -21,10 +21,10 @@ struct process
   TAILQ_ENTRY(process) pointers;
 
   /* Additional fields here */
-  u32 remaining_time;
-  u32 start_exec_time;
-  u32 waiting_time;
+  u32 start_time;
+  u32 wait_time;
   u32 response_time;
+  u32 remaining_time;
   bool start;
   /* End of "Additional fields here" */
 };
@@ -175,26 +175,26 @@ int main(int argc, char *argv[])
   }
 
   struct process *current;
-  u32 t = 0;
-  u32 done = 0;
+  u32 num_t = 0;
+  u32 num_size = 0;
   
   for(u32 i = 0; i < size; i++)
   {
-    if(data[i].arrival_time == t)
+    if(data[i].arrival_time == num_t)
     {
       TAILQ_INSERT_TAIL(&list, &data[i], pointers);
     }
     data[i].remaining_time = data[i].burst_time;
   }
 
-  while(done < size)
+  while(num_size < size)
   {
     while(TAILQ_EMPTY(&list))
     {
-      t++;
+      num_t++;
       for(u32 i = 0; i < size; i++)
       {
-        if(data[i].arrival_time == t)
+        if(data[i].arrival_time == num_t)
           TAILQ_INSERT_TAIL(&list, &data[i], pointers);
       }
     }
@@ -203,8 +203,8 @@ int main(int argc, char *argv[])
 
     if(current->start == false)
     {
-      current->start_exec_time = t;
-      current->response_time = t-current->arrival_time;
+      current->start_time = num_t;
+      current->response_time = num_t - current->arrival_time;
       current->start = true;
     }
     u32 time = quantum_length;
@@ -215,23 +215,23 @@ int main(int argc, char *argv[])
     {
       current->remaining_time--;
       time--;
-      t++;
+      num_t++;
       
       for(u32 i = 0; i < size;i++)
       {
-        if(data[i].arrival_time == t)
+        if(data[i].arrival_time == num_t)
           TAILQ_INSERT_TAIL(&list, &data[i], pointers);
       }
     }
     if(current->remaining_time == 0)
     {
-      current->waiting_time = t-current->arrival_time-current->burst_time;
-      done++;
-      total_waiting_time += current->waiting_time;
+      current->wait_time = num_t - current->arrival_time-current->burst_time;
+      num_size++;
+      total_waiting_time += current->wait_time;
       total_response_time += current->response_time;
     }
     else
-      TAILQ_INSERT_TAIL(&list, current,pointers);
+      TAILQ_INSERT_TAIL(&list, current, pointers);
   }
   /* End of "Your code here" */
 
